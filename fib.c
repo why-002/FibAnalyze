@@ -29,9 +29,8 @@ int *tail_helper(int *nums, int n){
     if(n == 0){
         return nums;
     }
-    int temp = nums[0];
     nums[0] = nums[0] + nums[1];
-    nums[1] = temp;
+    nums[1] = nums[0] - nums[1];
     return tail_helper(nums, n-1);
 }
 
@@ -100,25 +99,25 @@ int main(){
     int normal = fib_naive(num);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
     time = get_elapsed_time_sec(&start, &end);
-    printf("Total elapsed naive: %.4e sec\n", time);
+    printf("Total elapsed naive: %.4e sec with ans: %d\n", time, normal);
 
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
     int tail = fib_tail(num);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
     time = get_elapsed_time_sec(&start, &end);
-    printf("Total elapsed tail: %.4e sec\n", time);
+    printf("Total elapsed tail: %.4e sec with ans: %d\n", time, tail);
     
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
     int top = fib_top_down(num);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
     time = get_elapsed_time_sec(&start, &end);
-    printf("Total elapsed top down: %.4e sec\n", time);
+    printf("Total elapsed top down: %.4e sec with ans: %d\n", time, top);
     
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
     int mem = fib_memoize(num);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
     time = get_elapsed_time_sec(&start, &end);
-    printf("Total elapsed memoized: %.4e sec\n", time);
+    printf("Total elapsed memoized: %.4e sec with ans: %d\n", time, mem);
 
     return 0;
 }
