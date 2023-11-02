@@ -25,13 +25,13 @@ int fib_naive(int n){
     return fib_naive(n-1) + fib_naive(n-2);
 }
 
-int *tail_helper(int *nums, int n){
+int tail_helper(int n, int n1, int n2){
     if(n == 0){
-        return nums;
+        return n1;
     }
-    nums[0] = nums[0] + nums[1];
-    nums[1] = nums[0] - nums[1];
-    return tail_helper(nums, n-1);
+    n1 = n1 + n2;
+    n2 = n1 - n2;
+    return tail_helper(n-1, n1, n2);
 }
 
 int fib_tail(int n){
@@ -42,9 +42,7 @@ int fib_tail(int n){
         return 1;
     }
     else{
-        int nums[2] = {1,1};
-        int temp = *tail_helper(nums, n-2);
-        return temp;
+        return tail_helper(n-2, 1, 1);
     }
 }
 
