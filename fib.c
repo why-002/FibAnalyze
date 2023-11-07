@@ -46,28 +46,42 @@ int fib_tail(int n){
     }
 }
 
+int fib_tail_loop(int n){
+    if (n == 0){
+        return 0;
+    }
+    if(n == 1){
+        return 1;
+    }
+    int n1 = 1;
+    int n2 = 1;
+    for (int i = 0; i<n-2;i++){
+        n1 = n1 + n2;
+        n2 = n1 - n2;
+    }
+    return n1;
+}
+
 int memo_helper(int n, int *memo){
     if(n == 0){
         return 0;
     }
-    if(n == 1){
-        memo[n] = 1;
+    else if(n == 1){
         return 1;
     }
-    if(memo[n] == 0){
-        memo[n] = memo_helper(n-1, memo) + memo_helper(n-2, memo);
-        return memo[n];
+    else if(n > memo[0]){
+        memo[n+1] = memo_helper(n-1, memo) + memo_helper(n-2, memo);
+        memo[0] = n;
+        return memo[n+1];
     }
     else{
-        return memo[n];
+        return memo[n+1];
     }
 }
 
 int fib_memoize(int n){
-    int *memo = malloc(sizeof(int) * n);
-    for (int i = 0; i <= n; i++){
-        memo[i] = 0;
-    }
+    int *memo = malloc(sizeof(int) * (n+1));
+    memo[0] = 0;
     int temp = memo_helper(n, memo);
     free(memo);
     return temp;
@@ -116,6 +130,12 @@ int main(){
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
     time = get_elapsed_time_sec(&start, &end);
     printf("Total elapsed memoized: %.4e sec with ans: %d\n", time, mem);
+
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
+    int loop = fib_tail_loop(num);
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
+    time = get_elapsed_time_sec(&start, &end);
+    printf("Total elapsed loop tail rec: %.4e sec with ans: %d\n", time, loop);
 
     return 0;
 }
